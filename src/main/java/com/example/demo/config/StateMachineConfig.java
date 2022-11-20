@@ -1,9 +1,18 @@
 package com.example.demo.config;
 
-import com.example.demo.PurchaseEvent;
-import com.example.demo.PurchaseState;
+import com.example.demo.action.BuyAction;
+import com.example.demo.action.CancelAction;
+import com.example.demo.event.PurchaseEvent;
+import com.example.demo.state.PurchaseState;
+import com.example.demo.action.ErrorAction;
+import com.example.demo.action.ReservedAction;
+import com.example.demo.guard.HideGuard;
+import com.example.demo.listener.PurchaseStateMachineApplicationListener;
+import com.example.demo.persist.PurchaseStateMachinePersister;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.action.Action;
+import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
@@ -14,12 +23,14 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 
 import java.util.EnumSet;
 
-import static com.example.demo.PurchaseEvent.*;
-import static com.example.demo.PurchaseState.*;
+import static com.example.demo.event.PurchaseEvent.*;
+import static com.example.demo.state.PurchaseState.*;
 
 /**
  * Конфигурация StateMachine
  */
+@Configuration
+@EnableStateMachineFactory
 public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<PurchaseState, PurchaseEvent> {
 
 
@@ -34,15 +45,10 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<Purcha
     public void configure(final StateMachineStateConfigurer<PurchaseState, PurchaseEvent> states) throws Exception {
         states
                 .withStates()
-
                 // — это статус в котором будет находиться машина после создания bean-а,
                 .initial(NEW)
-
                 // — статус зайдя в который машина выполнит statemachine.stop(). Конец машины, работа закончина
                 .end(PurchaseState.PURCHASE_COMPLETE)
-                .stateEntry()
-                .stateExit()
-                .state()
                 //Регестрируем все статусы/список всех статусов, можно пихать скопом
                 .states(EnumSet.allOf(PurchaseState.class));
 

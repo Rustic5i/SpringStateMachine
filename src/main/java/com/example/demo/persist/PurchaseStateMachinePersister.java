@@ -1,7 +1,7 @@
-package com.example.demo.config;
+package com.example.demo.persist;
 
-import com.example.demo.PurchaseEvent;
-import com.example.demo.PurchaseState;
+import com.example.demo.event.PurchaseEvent;
+import com.example.demo.state.PurchaseState;
 import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.StateMachinePersist;
 

@@ -11,7 +11,7 @@ public interface PurchaseService {
      * @return успешная/не успешная операция, в нашем примере операция может стать не успешной если при попытке восстановить
      * машину их импровизированного репозитория произойдет ошибка.
      */
-    boolean reserved(String userId, String productId);
+    boolean  reserved(String userId, String productId);
 
     /**
      * Отмена резервирования товара/удаление из пользовательской корзины
